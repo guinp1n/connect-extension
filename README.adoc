@@ -31,7 +31,7 @@ We strongly recommend to read the {hivemq-extension-docs}[HiveMQ Extension Docum
 === Manual Testing
 
 Connect with an {hivemq-mqtt-toolbox}[MQTT client] of your choice.
-You should see in the (HiveMQ Control Center)[https://docs.hivemq.com/hivemq/latest/control-center/information.html#client-details] that the Keep Alive of the client is 66 seconds.
+You should see in the https://docs.hivemq.com/hivemq/latest/control-center/information.html#client-details[HiveMQ Control Center] that the Keep Alive of the client is 66 seconds.
 
 == Next Steps
 
