@@ -25,12 +25,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This is the main class of the extension,
- * which is instantiated either during the HiveMQ start up process (if extension is enabled)
- * or when HiveMQ is already started by enabling the extension.
  *
- * @author Florian Limpöck
- * @since 4.0.0
+ * @author Dasha Samkova
+ * @since 4.35.0
  */
 public class HelloWorldMain implements ExtensionMain {
 
@@ -42,8 +39,7 @@ public class HelloWorldMain implements ExtensionMain {
             final @NotNull ExtensionStartOutput extensionStartOutput) {
 
         try {
-            addClientLifecycleEventListener();
-            addPublishModifier();
+            addConnectModifier();
 
             final ExtensionInformation extensionInformation = extensionStartInput.getExtensionInformation();
             log.info("Started " + extensionInformation.getName() + ":" + extensionInformation.getVersion());
@@ -62,20 +58,8 @@ public class HelloWorldMain implements ExtensionMain {
         log.info("Stopped " + extensionInformation.getName() + ":" + extensionInformation.getVersion());
     }
 
-    private void addClientLifecycleEventListener() {
-        final EventRegistry eventRegistry = Services.eventRegistry();
-
-        final HelloWorldListener helloWorldListener = new HelloWorldListener();
-
-        eventRegistry.setClientLifecycleEventListener(input -> helloWorldListener);
-    }
-
-    private void addPublishModifier() {
-        final InitializerRegistry initializerRegistry = Services.initializerRegistry();
-
+    private void addConnectModifier() {
         final HelloWorldInterceptor helloWorldInterceptor = new HelloWorldInterceptor();
-
-        initializerRegistry.setClientInitializer(
-                (initializerInput, clientContext) -> clientContext.addPublishInboundInterceptor(helloWorldInterceptor));
+        Services.interceptorRegistry().setConnectInboundInterceptorProvider(input -> helloWorldInterceptor);
     }
 }

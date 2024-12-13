@@ -16,32 +16,26 @@
 package com.hivemq.extensions.helloworld;
 
 import com.hivemq.extension.sdk.api.annotations.NotNull;
+import com.hivemq.extension.sdk.api.interceptor.connect.ConnectInboundInterceptor;
+import com.hivemq.extension.sdk.api.interceptor.connect.parameter.ConnectInboundInput;
+import com.hivemq.extension.sdk.api.interceptor.connect.parameter.ConnectInboundOutput;
 import com.hivemq.extension.sdk.api.interceptor.publish.PublishInboundInterceptor;
-import com.hivemq.extension.sdk.api.interceptor.publish.parameter.PublishInboundInput;
-import com.hivemq.extension.sdk.api.interceptor.publish.parameter.PublishInboundOutput;
-import com.hivemq.extension.sdk.api.packets.publish.ModifiablePublishPacket;
+import com.hivemq.extension.sdk.api.packets.publish.ModifiableConnectPacket;
 
-import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 
 /**
- * This is a very simple {@link PublishInboundInterceptor},
- * it changes the payload of every incoming PUBLISH with the topic 'hello/world' to 'Hello World!'.
  *
- * @author Yannick Weber
- * @since 4.3.1
+ * @author Dasha Samkova
+ * @since 4.35.0
  */
-public class HelloWorldInterceptor implements PublishInboundInterceptor {
+public class HelloWorldInterceptor implements ConnectInboundInterceptor {
 
     @Override
-    public void onInboundPublish(
-            final @NotNull PublishInboundInput publishInboundInput,
-            final @NotNull PublishInboundOutput publishInboundOutput) {
+    public void onConnect(
+            final @NotNull ConnectInboundInput connectInboundInput,
+            final @NotNull ConnectInboundOutput connectInboundOutput) {
 
-        final ModifiablePublishPacket publishPacket = publishInboundOutput.getPublishPacket();
-        if ("hello/world".equals(publishPacket.getTopic())) {
-            final ByteBuffer payload = ByteBuffer.wrap("Hello World!".getBytes(StandardCharsets.UTF_8));
-            publishPacket.setPayload(payload);
-        }
+        final ModifiableConnectPacket connectPacket = connectInboundOutput.getConnectPacket();
+        connectPacket.setKeepAlive(66);
     }
 }
