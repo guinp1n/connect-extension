@@ -14,7 +14,7 @@ image:https://img.shields.io/github/actions/workflow/status/hivemq/hivemq-hello-
 
 == Purpose
 
-This Hello Connect extension registers a PublishInboundInterceptor to modify the Keep Alive of every CONNECT with the value of 66 seconds.
+This Hello Connect extension registers a ConnectInboundInterceptor to modify the Keep Alive of every CONNECT with the value of 66 seconds.
 
 We strongly recommend to read the {hivemq-extension-docs}[HiveMQ Extension Documentation] to grasp the core concepts of HiveMQ extension development.
 
